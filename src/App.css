@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=BBH+Bartle&family=Changa+One:ital@0;1&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+:root {
+  --bg: #f8fcfe;
+  --text-primary: #080118;
+  --text-secondary: #ece7e7;
+  --font: 'Inter', sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font);
+}
+
+h1 {
+  font-family: var(--font);
+  line-height: 0.9;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  margin-bottom: 48px;
+}
+
+
+button {
+  background-color: #030712;
+  color: var(--text-secondary);
+  border: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+}
+
+input {
+  background-color: #030712;
+  color: var(--text-secondary);
+  border: none;
+  padding: 7px 12px;
+  border-radius: 8px;
+}
+
+input::placeholder {
+  color: #cfcfcf;
+}
+
+.main {
+  display: flex;
+  gap: 7px;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.state-message {
+  color: #888;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+.error-message {
+  color: #e53e3e;
+  margin-top: 1rem;
+}
