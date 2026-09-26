@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Alan+Sans:wght@300..900&family=BBH+Bartle&family=Changa+One:ital@0;1&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap');
 
 :root {
-  --bg: #f8fcfe;
-  --text-primary: #080118;
-  --text-secondary: #ece7e7;
-  --font: 'Inter', sans-serif;
+  --bg: #ffffff;
+  --text: #020227;
+  --muted: #6b6b6b;
+  --border: #e5e5e5;
+  --font: 'Inter', system-ui, sans-serif;
 }
 
 *, *::before, *::after {
@@ -15,53 +16,106 @@
 
 body {
   background-color: var(--bg);
-  color: var(--text-primary);
+  color: var(--text);
   font-family: var(--font);
+}
+
+/* the whole thing is one narrow column in the middle of the page */
+.page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 96px 20px;
 }
 
 h1 {
-  font-family: var(--font);
-  line-height: 0.9;
-  letter-spacing: 2px;
-  color: var(--text-primary);
-  margin-bottom: 48px;
+  font-size: 40px;
+  font-weight: 600;
 }
 
+.subtitle {
+  color: var(--muted);
+  margin-top: 4px;
+  margin-bottom: 28px;
+}
 
-button {
-  background-color: #030712;
-  color: var(--text-secondary);
-  border: none;
-  padding: 7px 12px;
-  border-radius: 8px;
+/* the input and the check button sat side by side */
+.main {
+  display: flex;
+  gap: 8px;
 }
 
 input {
-  background-color: #030712;
-  color: var(--text-secondary);
-  border: none;
-  padding: 7px 12px;
-  border-radius: 8px;
+  flex: 1;
+  font: inherit;
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 10px 14px;
+  border: 1px solid #cac9c9;
+  box-shadow: 0px 2px 2px #cac9c9;
+}
+
+input:focus {
+  outline: none;
 }
 
 input::placeholder {
-  color: #cfcfcf;
+  color: var(--muted);
 }
 
-.main {
-  display: flex;
-  gap: 7px;
-  flex-direction: row;
-  justify-content: center;
+button {
+  font: inherit;
+  background-color: var(--text);
+  color: var(--bg);
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid #cac9c9;
+  box-shadow: 0px 2px 2px #615f5f;
+}
+
+button:hover {
+  opacity: 0.85;
 }
 
 .state-message {
-  color: #888;
-  font-style: italic;
-  margin-top: 1rem;
+  color: var(--muted);
+  margin-top: 12px;
+  font-size: 14px
 }
 
 .error-message {
-  color: #e53e3e;
-  margin-top: 1rem;
+  background-color: #c30a0a;
+  color: var(--bg);
+  padding: 7px;
+  margin-top: 24px;
+  border: 1px solid #cac9c9;
+  box-shadow: 0px 2px 2px #615f5f;
+}
+
+/* the results card, one label/value row per field */
+.result {
+  margin-top: 28px;
+  border: 1px solid #cac9c9;
+  box-shadow: 0px 2px 2px #b1aaaa57;
+  overflow: hidden;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: var(--muted);
+}
+
+.value {
+  text-align: right;
+  font-weight: 500;
 }

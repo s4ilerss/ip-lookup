@@ -1,16 +1,26 @@
-# React + Vite
+# IP Lookup
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React app that takes an IP address and shows where it is. Country, region, city, timezone and coordinates.
 
-Currently, two official plugins are available:
+**Live:** https://ip-lookup-delta.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## How it works
 
-## React Compiler
+Enter an ip address, you can view the information about that specific address.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Stack
 
-## Expanding the ESLint configuration
+- React 19 + Vite
+- Vercel serverless function for the API proxy
+- Plain CSS, no UI library
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Running it locally
+
+```bash
+npm install
+npm run dev
+```
+
+Set `API_KEY` to your API Ninjas key — in `.env` for local runs, and in the Vercel project settings (Environment Variables) for the deployed site.
+
+Vite doesn't run Vercel functions on its own, so `vite.config.js` mounts `api/lookup.js` on `/api/lookup` during dev. That way `npm run dev` behaves like the deployed site and you don't need the Vercel CLI.

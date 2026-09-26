@@ -1,36 +1,45 @@
-import { useState } from 'react' // importing usestate cus we will need it below
+import { useState } from 'react' // need usestate for the states below
 import './App.css' // contains the css
 
+// the free plan returns this string for the fields it doesnt give us, so we hide those rows
+function isLocked(value) {
+  return typeof value === 'string' && value.includes('premium subscribers only')
+}
+
+// one row of the results card, skipped entirely if the api didnt give us the value
+function Row({ label, value }) {
+  if (value === undefined || value === null || value === '' || isLocked(value)) { return null }
+  return (
+    <div className='row'>
+      <span className='label'>{label}</span>
+      <span className='value'>{value}</span>
+    </div>
+  )
+}
+
 function App() {
-  const API_KEY = import.meta.env.VITE_API_KEY //now i can use my api keys in this file, specifically when making a request to the API
-  const [ip, setIp] = useState(''); // this is for the user input field, we store the information in here
-  const [ipResponse, setIpResponse] = useState(''); // this is the state for the response from the api
-  const [loading, setLoading] = useState(false) //this contains the loading, we set it to true just before the fetch because we need to fill that empty gap when u press "check", it displays the loading so that it looks more user friendly
-  const [error, setError] = useState('') // we just use this state to store the error message and display it
+  const [ip, setIp] = useState(''); // whatever the user types in the input
+  const [ipResponse, setIpResponse] = useState(null); // the response from the api
+  const [loading, setLoading] = useState(false) // true while fetching, so the gap after "check" isnt empty
+  const [error, setError] = useState('') // error message we show to the user
 
-
-// this function is for the input field, we set the ip state to the value of the input field, and if the input field is empty we reset the ipResponse and error states
+// keeps the ip state in sync with the input, and clears the old result if its emptied
   function handleInputChange(e) {
     const value = e.target.value
     setIp(value)
     if (!value) {
-      setIpResponse('')
+      setIpResponse(null)
       setError('')
     }
   }
 
-// this function is for the check button, we first check if the ip state is empty, if it is we return and do nothing, otherwise we set loading to true, reset the ipResponse and error states, then we make a fetch request to the api with the ip address as a query parameter, we also include the api key in the headers, then we handle the response, if the response is not valid we set the error state to "Invalid IP address.", otherwise we set the ipResponse state to the data from the api, and finally we set loading to false, if there is an error during the fetch request we catch it and set the error state to "Something went wrong. Please try again." and set loading to false
+// runs on the check button, asks our own /api/lookup (it holds the key) and stores either the data or an error
   function handleCheck() {
     if (!ip) { return }
     setLoading(true)
-    setIpResponse('')
+    setIpResponse(null)
     setError('')
-    fetch(`https://api.api-ninjas.com/v1/iplookup?address=${ip}`, {
-      headers: {
-        'X-Api-Key': API_KEY,
-        'Accept': 'application/json'
-      }
-    })
+    fetch(`/api/lookup?address=${encodeURIComponent(ip)}`)
       .then(res => res.json())
       .then(data => {
         if (!data.is_valid) {
@@ -42,24 +51,50 @@ function App() {
       })
       .catch(err => {
         console.error(err)
-        setError('Something went wrong. Please try again.')
+        setError('Enter a valid address')
         setLoading(false)
       })
   }
 
-// this is the return statement, we have an input field and a button, we also have some conditional rendering to display the loading message, error message, and the region from the api response
+// so you can just hit enter instead of clicking check
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') { handleCheck() }
+  }
+
+// input + button, then we only show the message (or the result card) that applies right now
   return (
-    <div>
+    <div className='page'>
       <h1>IP Lookup</h1>
+      <p className='subtitle'>Enter an IP address to see where it is.</p>
+
       <div className='main'>
-        <input type="text" placeholder='enter ip address' onChange={handleInputChange}/>
+        <input
+          type="text"
+          placeholder='e.g. 12.123.123.123'
+          value={ip}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        />
         <button onClick={handleCheck}>Check</button>
       </div>
 
-      {!ip && <p className='state-message'>Enter an IP to begin</p>}
+      {!ip && !loading && <p className='state-message'>Enter an IP to begin</p>}
       {loading && <p className='state-message'>Loading...</p>}
       {error && !loading && <p className='error-message'>{error}</p>}
-      {ipResponse && !loading && <p>Region: {ipResponse.region}</p>}
+
+      {ipResponse && !loading && (
+        <div className='result'>
+          <Row label='IP address' value={ipResponse.address} />
+          <Row label='Country' value={ipResponse.country} />
+          <Row label='Country code' value={ipResponse.country_code} />
+          <Row label='Region' value={ipResponse.region} />
+          <Row label='Region code' value={ipResponse.region_code} />
+          <Row label='City' value={ipResponse.city} />
+          <Row label='Timezone' value={ipResponse.timezone} />
+          <Row label='Latitude' value={ipResponse.lat} />
+          <Row label='Longitude' value={ipResponse.lon} />
+        </div>
+      )}
     </div>
   );
 }
